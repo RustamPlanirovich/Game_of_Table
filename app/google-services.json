@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "113922215755",
+    "project_id": "game-of-table",
+    "storage_bucket": "game-of-table.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113922215755:android:30360fc273b0a1737be2ce",
+        "android_client_info": {
+          "package_name": "com.example.gameoftable"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113922215755-09u0dqcdo6dt0eereqcg1pli1ol54fiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gameoftable",
+            "certificate_hash": "4f39cc7d155fe3baa00b18b40aaaefa84f7f1b3b"
+          }
+        },
+        {
+          "client_id": "113922215755-ain1hflg5vj83cerh8so7ugh0mr737il.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtQuMdwu4EDvPqriNZ5S8vuRLsrEz-qSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113922215755-ain1hflg5vj83cerh8so7ugh0mr737il.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
