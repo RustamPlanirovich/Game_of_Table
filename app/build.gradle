@@ -27,17 +27,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility "1.8"
+        targetCompatibility "1.8"
     }
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dataBinding {
-        enabled = true
-    }
-    viewBinding {
-        enabled = true
+    buildFeatures{
+        viewBinding true
+        dataBinding true
     }
 }
 
@@ -59,7 +57,7 @@ dependencies {
     // Life Data
     implementation "android.arch.lifecycle:extensions:1.1.1"
     //noinspection LifecycleAnnotationProcessorWithJava8
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
 
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
