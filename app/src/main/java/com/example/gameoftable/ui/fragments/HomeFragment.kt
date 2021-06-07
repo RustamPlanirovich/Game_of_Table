@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.gameoftable.R
+import com.example.gameoftable.databinding.HomeFragmentBinding
+import com.example.gameoftable.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
+    private lateinit var binding: HomeFragmentBinding
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -20,12 +24,18 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_fragment, container, false)
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return (binding.root)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        Glide.with(this)
+            .load("https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/User_icon-cp.svg/1200px-User_icon-cp.svg.png")
+            .circleCrop()
+            .into(binding.user.userPhoto)
         // TODO: Use the ViewModel
     }
 

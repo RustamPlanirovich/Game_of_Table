@@ -1,4 +1,4 @@
-package com.example.gameoftable.ui.fragments
+package com.example.gameoftable.viewmodel
 
 import androidx.lifecycle.ViewModel
 

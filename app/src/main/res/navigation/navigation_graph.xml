@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigation_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/homeFragment">
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.gameoftable.ui.fragments.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/seatchFragment"
+        android:name="com.example.gameoftable.ui.fragments.SeatchFragment"
+        android:label="seatch_fragment"
+        tools:layout="@layout/seatch_fragment" />
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.example.gameoftable.ui.fragments.FavouriteFragment"
+        android:label="favourite_fragment"
+        tools:layout="@layout/favourite_fragment" />
+    <fragment
+        android:id="@+id/purchaseFragment"
+        android:name="com.example.gameoftable.ui.fragments.PurchaseFragment"
+        android:label="purchase_fragment"
+        tools:layout="@layout/purchase_fragment" />
 </navigation>
