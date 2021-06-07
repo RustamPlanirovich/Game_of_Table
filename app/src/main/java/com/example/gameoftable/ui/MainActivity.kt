@@ -1,9 +1,7 @@
-package com.example.gameoftable
+package com.example.gameoftable.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.gameoftable.databinding.ActivityMainBinding
 import com.example.gameoftable.viewModelFactory.MainActivityViewModelFactory
