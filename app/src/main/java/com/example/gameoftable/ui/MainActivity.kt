@@ -11,7 +11,7 @@ import com.example.gameoftable.R
 import com.example.gameoftable.databinding.ActivityMainBinding
 import com.example.gameoftable.viewModelFactory.MainActivityViewModelFactory
 import com.example.gameoftable.viewmodel.MainViewModel
-
+//
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
