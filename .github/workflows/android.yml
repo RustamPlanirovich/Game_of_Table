@@ -20,12 +20,8 @@ jobs:
       run: ./gradlew build
     - name: Build Debug APK
       run: ./gradlew assembleDebug
-    - name: Releasing using Hub
-      uses: ShaunLWM/action-release-debugapk@master
-      run: |
-          apt update && apt install -y git wget
-          url="$(wget -qO- https://api.github.com/repos/github/hub/releases/latest | tr '"' '\n' | grep '.*/download/.*/hub-linux-amd64-.*.tgz')"
-          wget -qO- "$url" | tar -xzvf- -C /usr/bin --strip-components=2 --wildcards "*/bin/hub"
+   
+     
       env:
        GITHUB_TOKEN: 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
        APP_FOLDER: app
