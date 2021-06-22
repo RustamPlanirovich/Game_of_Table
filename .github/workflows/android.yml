@@ -21,7 +21,7 @@ jobs:
     - name: Build Debug APK
       run: ./gradlew assembleDebug
     - name: Releasing using Hub
-      uses: RustamPlanirovich/action-release-debugapk@master
+      uses: RustamPlanirovich/Game_of_Table@master
       env:
        GITHUB_TOKEN: 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
        APP_FOLDER: app
