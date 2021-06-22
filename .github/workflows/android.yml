@@ -20,7 +20,7 @@ jobs:
     - name: Build Release APK
       run: ./gradlew assembleRelease
     - name: Releasing using Hub
-      uses: RustamPlanirovich/Game_of_Table@master
+      uses: kyze8439690/action-release-releaseapk@master
       env:
        GITHUB_TOKEN: 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
        APP_FOLDER: app
