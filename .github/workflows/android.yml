@@ -25,7 +25,7 @@ jobs:
         with:
           repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
           token: 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
-          path: app/keystore
+          path: app/release
 
       - name: Run tests and build release artifacts
         run: |
