@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
-          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
+          token: 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
           path: app/keystore
 
       - name: Run tests and build release artifacts
