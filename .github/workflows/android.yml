@@ -3,7 +3,7 @@ name: Test_and_build_signed_artifacts_on_releases
 on:
   push:
     branches:
-      - 'main'
+      - 'master'
 
 env:
   KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
