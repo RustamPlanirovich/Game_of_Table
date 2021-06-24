@@ -1,3 +1,3 @@
 # Game_of_Table
 
-https://github.com/RustamPlanirovich/Game_of_Table/actions/workflows/android/badge.svg
+![Release build](https://github.com/RustamPlanirovich/Game_of_Table/actions/workflows/android.yml/badge.svg)
