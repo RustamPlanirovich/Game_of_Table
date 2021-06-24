@@ -1,4 +1,4 @@
-name: Test_and_build_signed_artifacts_on_releases
+name: build_release
 
 on:
   push:
@@ -24,8 +24,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
-          token: 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
-          path: app/release
+          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
+          path: app/keystore
 
       - name: Run tests and build release artifacts
         run: |
