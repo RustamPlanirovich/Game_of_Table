@@ -1,7 +1,7 @@
-name: Build_release
+name: build_release
 
 on:
-  pull_request:
+  push:
     branches:
       - 'master'
 
