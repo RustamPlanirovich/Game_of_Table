@@ -34,7 +34,7 @@ jobs:
           ./gradlew bundleRelease
 
       - name: Upload signed APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v1
         with:
           name: app-release.apk
           path: app/build/outputs/apk/release/app-release.apk
