@@ -38,9 +38,3 @@ jobs:
         with:
           name: app-release.apk
           path: app/release/app-release.apk
-
-      - name: Upload AAB Bundle
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release.aab
-          path: app/release/app-release.aab
