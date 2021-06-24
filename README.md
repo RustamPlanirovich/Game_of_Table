@@ -3,4 +3,4 @@
 
 Main branch status
 
-![master](https://github.com/RustamPlanirovich/Game_of_Table/workflows/Hello_world/badge.svg)
+![master](https://github.com/RustamPlanirovich/Game_of_Table/workflows/android/badge.svg)
