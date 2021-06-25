@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
 
+        val z = 0
         val navController = findNavController(R.id.home_fragment)
         binding.bottomNavigationView.setupWithNavController(navController)
     }
