@@ -52,8 +52,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.69
-          release_name: Release v1.69
+          tag_name: v1.70
+          release_name: Release v1.70
           draft: false
           prerelease: false
           
@@ -74,6 +74,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-           The event triggered final step.
-           echo This event is a pull request that had an assignee removed.
+          args: The ${{ github.event_name }} event triggered first step.
