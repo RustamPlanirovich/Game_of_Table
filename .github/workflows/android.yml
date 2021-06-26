@@ -52,8 +52,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.70
-          release_name: Release v1.70
+          tag_name: v1.72
+          release_name: Release v1.72
           draft: false
           prerelease: false
           
@@ -74,4 +74,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: The ${{ github.event_name }} event triggered first step.
+          args: The ${{ commit.sha }} event triggered first step.
