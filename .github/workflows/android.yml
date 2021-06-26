@@ -52,8 +52,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.1
-          release_name: Release v1.1
+          tag_name: v1.2
+          release_name: Release v1.2
           draft: false
           prerelease: false
           
@@ -72,6 +72,8 @@ jobs:
       - name: send custom message with args
         uses: appleboy/telegram-action@master
         with:
-          to: 1844489016
-          token: 1844489016:AAHk36RtZGh6OuKJ1ucWWR5SnhW_gdnjQ6g
-          args: The ${{ github.event_name }} event triggered first step.
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+           The event triggered final step.
+           echo This event is a pull request that had an assignee removed.
