@@ -45,7 +45,7 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: Сборка проекта на основе ${{ github.workflow }} завершена успешно.
+          args: Сборка проекта на основе ${{ repo.namespace }} завершена успешно.
 
   
       - name: Checkout code
@@ -60,8 +60,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.73
-          release_name: Release v1.73
+          tag_name: v1.74
+          release_name: Release v1.74
           draft: false
           prerelease: false
           
@@ -82,4 +82,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: Выпуск релиза на основе ${{ github.workflow }} завершен успешно.
+          args: Выпуск релиза на основе ${{ repo.namespace }} завершен успешно.
