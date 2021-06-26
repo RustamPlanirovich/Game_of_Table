@@ -38,6 +38,14 @@ jobs:
         with:
           name: app-release.apk
           path: app/release/app-release.apk
+          
+      - uses: actions/checkout@master
+      - name: send custom message with args
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Сборка проекта на основе ${{ github.workflow }} завершена успешно.
 
   
       - name: Checkout code
@@ -52,8 +60,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.72
-          release_name: Release v1.72
+          tag_name: v1.73
+          release_name: Release v1.73
           draft: false
           prerelease: false
           
@@ -74,4 +82,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: The ${{ commit.sha }} event triggered first step.
+          args: Выпуск релиза на основе ${{ github.workflow }} завершен успешно.
