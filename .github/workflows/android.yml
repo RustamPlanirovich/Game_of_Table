@@ -1,65 +1,87 @@
+name: build_release
+
 on:
-  push:
-    branches:
-      - 'master'
+push:
+branches:
+- 'master'
 
 env:
-  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-  RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
-  RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
+KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
+RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
 
 jobs:
-  build_apk_aab:
-    name: Build release artifacts
-    runs-on: ubuntu-20.04
-    steps:
+build_apk_aab:
+name: Build release artifacts
+runs-on: ubuntu-20.04
+steps:
 
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with: {java-version: 1.8}
+```
+  - uses: actions/checkout@v2
+  - uses: actions/setup-java@v1
+    with: {java-version: 1.8}
 
-      - name: Checkout keystore repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
-          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
-          path: app/keystore
+  - name: Checkout keystore repo
+    uses: actions/checkout@v2
+    with:
+      repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
+      token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
+      path: app/keystore
 
-      - name: Run tests and build release artifacts
-        run: |
-          ./gradlew test
-          ./gradlew assembleRelease --stacktrace
-          ./gradlew bundleRelease
+  - name: Run tests and build release artifacts
+    run: |
+      ./gradlew test
+      ./gradlew assembleRelease --stacktrace
+      ./gradlew bundleRelease
 
-      - name: Upload signed APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release.apk
-          path: app/release/app-release.apk
+  - name: Upload signed APK
+    uses: actions/upload-artifact@v2
+    with:
+      name: app-release.apk
+      path: app/release/app-release.apk
 
-  
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build project # This would actually build your project, using zip for an example artifact
-        run: |
-          zip --junk-paths my-artifact README.md
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v1.0
-          release_name: Release v1.0
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.KEYSTORE_ACCESS_TOKEN  }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: app/release/app-release.apk
-          asset_name: release.apk
-          asset_content_type: application/zip
+      #Отправка сообщения в телеграм об успешной сборке
+  - uses: actions/checkout@master
+  - name: send custom message with args
+    uses: appleboy/telegram-action@master
+    with:
+      to: ${{ secrets.TELEGRAM_TO }}
+      token: ${{ secrets.TELEGRAM_TOKEN }}
+      args: Сборка проекта на основе ${{ github.workspace }} завершена успешно.
+
+  - name: Checkout code
+    uses: actions/checkout@v2
+  - name: Build project # This would actually build your project, using zip for an example artifact
+    run: |
+      zip --junk-paths my-artifact README.md
+
+  - name: Create Release
+    id: create_release
+    uses: actions/create-release@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      tag_name: v1.1
+      release_name: Release v1.1
+      draft: false
+      prerelease: false
+
+  - name: Upload Release Asset
+    id: upload-release-asset
+    uses: actions/upload-release-asset@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.KEYSTORE_ACCESS_TOKEN  }}
+    with:
+      upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: <https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps>
+      asset_path: app/release/app-release.apk
+      asset_name: Game Of Table.apk
+      asset_content_type: application/zip
+
+      #Отправка сообщения в телеграм об успешном релизе
+  - uses: actions/checkout@master
+  - name: send custom message with args
+    uses: appleboy/telegram-action@master
+    with:
+      to: ${{ secrets.TELEGRAM_TO }}
+      token: ${{ secrets.TELEGRAM_TOKEN }}
+      args: Выпуск релиза на основе ${{ github.workspace }} завершен успешно.
