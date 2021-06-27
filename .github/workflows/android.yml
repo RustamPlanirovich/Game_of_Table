@@ -1,5 +1,3 @@
-name: build_release
-
 on:
   push:
     branches:
@@ -37,16 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
-          path: ${{github.workspace}} /app/build/outputs/apk/release/app-release.apk
-          
-          #Отправка сообщения в телеграм об успешной сборке
-      - uses: actions/checkout@master
-      - name: send custom message with args
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: Сборка проекта на основе ${{ github.workspace }} завершена успешно.
+          path: app/release/app-release.apk
 
   
       - name: Checkout code
@@ -54,18 +43,16 @@ jobs:
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
           zip --junk-paths my-artifact README.md
-          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.84
-          release_name: Release v1.84
+          tag_name: v1.87
+          release_name: Release v1.87
           draft: false
           prerelease: false
-          
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
@@ -73,15 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.KEYSTORE_ACCESS_TOKEN  }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: app/build/outputs/apk/release/app-release.apk
-          asset_name: Game Of Table.apk
+          asset_path: app/release/app-release.apk
+          asset_name: release.apk
           asset_content_type: application/zip
-          
-          #Отправка сообщения в телеграм об успешном релизе
-      - uses: actions/checkout@master
-      - name: send custom message with args
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: Выпуск релиза на основе ${{ github.workspace }} завершен успешно.
