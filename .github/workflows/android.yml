@@ -38,6 +38,12 @@ jobs:
       with:
         name: app-release.apk
         path: app/build/outputs/apk/release/app-release.apk
+        
+    - name: Upload AAB Bundle
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release.aab
+        path: app/build/outputs/bundle/release/app-release.aab
 
       #Отправка сообщения в телеграм об успешной сборке
     - uses: actions/checkout@master
@@ -60,8 +66,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v1.4
-        release_name: Release v1.4
+        tag_name: v1.5
+        release_name: Release v1.5
         draft: false
         prerelease: false
 
