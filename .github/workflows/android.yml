@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
-          path: app/release/app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
 
   
       - name: Checkout code
@@ -49,8 +49,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.87
-          release_name: Release v1.87
+          tag_name: v1.88
+          release_name: Release v1.88
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -60,6 +60,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.KEYSTORE_ACCESS_TOKEN  }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: app/release/app-release.apk
+          asset_path: app/build/outputs/apk/release/app-release.apk
           asset_name: release.apk
           asset_content_type: application/zip
