@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
-          path: app/build/outputs/apk/release/app-release.apk 
+          path: app/build/outputs/apk/release/app-release.apk
           
           #Отправка сообщения в телеграм об успешной сборке
       - uses: actions/checkout@master
@@ -61,8 +61,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.81
-          release_name: Release v1.81
+          tag_name: v1.82
+          release_name: Release v1.82
           draft: false
           prerelease: false
           
