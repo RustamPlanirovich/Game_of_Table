@@ -34,7 +34,7 @@ jobs:
         ./gradlew bundleRelease
 
     - name: Upload signed APK
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v1
       with:
         name: app-release.apk
         path: app/build/outputs/apk/release/app-release.apk
@@ -67,8 +67,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v1.7
-        release_name: Release v1.7
+        tag_name: v1.8
+        release_name: Release v1.8
         draft: false
         prerelease: false
 
