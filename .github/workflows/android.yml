@@ -37,7 +37,7 @@ jobs:
       
     - name: Build project # This would actually build your project, using zip for an example artifact
       run: |
-        zip --junk-paths my-artifact README.md
+        bash ./gradlew assembleRelease
       
     - name: Upload signed APK
       uses: actions/upload-artifact@v2
@@ -73,7 +73,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # Upload URL, no need to change
         asset_path: app/build/outputs/apk/release/app-release.apk # Upload path
-        asset_name: LightTimetable-${{steps.get-version.outputs.result}}.apk #    
+        asset_name: GameOfTable-${{steps.get-version.outputs.result}}.apk #    
         asset_content_type: application/vnd.android.package-archiv #Resource Type
 
       #Отправка сообщения в телеграм об успешном релизе
