@@ -1,9 +1,9 @@
-name: build_release
+name: Test_and_build_signed_artifacts_on_release
 
 on:
-  push:
+  pull_request:
     branches:
-      - 'master'
+      - 'main'
 
 env:
   KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -12,76 +12,36 @@ env:
 
 jobs:
   build_apk_aab:
+    if: startsWith(github.head_ref, 'release/') == true
     name: Build release artifacts
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with: {java-version: 1.8}
-    
-    - name: Checkout keystore repo
-      uses: actions/checkout@v2
-      with:
-        repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
-        token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
-        path: app/keystore
-    
-    - name: Run tests and build release artifacts
-      run: |
-        ./gradlew test
-        ./gradlew assembleRelease --stacktrace
-        ./gradlew bundleRelease
 
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Build project # This would actually build your project, using zip for an example artifact
-      run: |
-        bash ./gradlew assembleRelease
-      
-    - name: Upload signed APK
-      uses: actions/upload-artifact@v2
-      with:
-        name: app-release.apk
-        path: app/build/outputs/apk/release/app-release.apk
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with: {java-version: 1.8}
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-        # Get the APK version number
-    - name: Get Version Name
-      uses: actions/github-script@v3
-      id: get-version
-      with:
-        script: |
-          const str=process.env.GITHUB_REF;
-          return str.substring(str.indexOf("v"));
-        result-encoding: string
+      - name: Checkout keystore repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
+          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
+          path: app/keystore
 
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.KEYSTORE_ACCESS_TOKEN  }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # Upload URL, no need to change
-        asset_path: app/build/outputs/apk/release/app-release.apk # Upload path
-        asset_name: GameOfTable-${{steps.get-version.outputs.result}}.apk #    
-        asset_content_type: application/vnd.android.package-archiv #Resource Type
+      - name: Run tests and build release artifacts
+        run: |
+          ./gradlew test
+          ./gradlew assembleRelease --stacktrace
+          ./gradlew bundleRelease
 
-      #Отправка сообщения в телеграм об успешном релизе
-    - uses: actions/checkout@master
-    - name: send custom message with args
-      uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        photo: succes.png
-        args: Выпуск релиза на основе ${{ github.workspace }} завершен успешно.
+      - name: Upload signed APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload AAB Bundle
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.aab
+          path: app/build/outputs/bundle/release/app-release.aab
