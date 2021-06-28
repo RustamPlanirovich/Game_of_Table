@@ -34,8 +34,15 @@ jobs:
 
     - name: Checkout code
       uses: actions/checkout@v2
+      
     - name: Build project # This would actually build your project, using zip for an example artifact
       run: bash ./gradlew assembleRelease
+      
+    - name: Upload signed APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release.apk
+        path: app/build/outputs/apk/release/app-release.apk
 
     - name: Create Release
       id: create_release
