@@ -1,9 +1,9 @@
 name: Test_and_build_signed_artifacts_on_release
 
 on:
-  pull_request:
+  push:
     branches:
-      - 'main'
+      - 'master'
 
 env:
   KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -12,7 +12,6 @@ env:
 
 jobs:
   build_apk_aab:
-    if: startsWith(github.head_ref, 'release/') == true
     name: Build release artifacts
     runs-on: ubuntu-20.04
     steps:
