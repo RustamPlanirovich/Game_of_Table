@@ -15,51 +15,27 @@ jobs:
     name: Build release artifacts
     runs-on: ubuntu-20.04
     steps:
-
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
       with: {java-version: 1.8}
-
+    
     - name: Checkout keystore repo
       uses: actions/checkout@v2
       with:
         repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
         token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
         path: app/keystore
-
+    
     - name: Run tests and build release artifacts
       run: |
         ./gradlew test
         ./gradlew assembleRelease --stacktrace
         ./gradlew bundleRelease
 
-    - name: Upload signed APK
-      uses: actions/upload-artifact@v1
-      with:
-        name: app-release.apk
-        path: app/build/outputs/apk/release/app-release.apk
-        
-    - name: Upload AAB Bundle
-      uses: actions/upload-artifact@v2
-      with:
-        name: app-release.aab
-        path: app/build/outputs/bundle/release/app-release.aab
-
-      #Отправка сообщения в телеграм об успешной сборке
-    - uses: actions/checkout@master
-    - name: send custom message with args
-      uses: appleboy/telegram-action@master
-      with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        photo: succes.png
-        args: Сборка проекта на основе ${{ github.workspace }} завершена успешно.
-
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Build project # This would actually build your project, using zip for an example artifact
-      run: |
-        zip --junk-paths my-artifact README.md
+      run: bash ./gradlew assembleRelease
 
     - name: Create Release
       id: create_release
@@ -67,10 +43,19 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v1.11
-        release_name: Release v1.11
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+        # Get the APK version number
+    - name: Get Version Name
+      uses: actions/github-script@v3
+      id: get-version
+      with:
+        script: |
+          const str=process.env.GITHUB_REF;
+          return str.substring(str.indexOf("v"));
+        result-encoding: string
 
     - name: Upload Release Asset
       id: upload-release-asset
@@ -78,10 +63,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.KEYSTORE_ACCESS_TOKEN  }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: <https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps>
-        asset_path: app/build/outputs/apk/release/app-release.apk
-        asset_name: Game Of Table.apk
-        asset_content_type: application/zip
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # Upload URL, no need to change
+        asset_path: app/build/outputs/apk/release/app-release.apk # Upload path
+        asset_name: LightTimetable-${{steps.get-version.outputs.result}}.apk #    
+        asset_content_type: application/vnd.android.package-archiv #Resource Type
 
       #Отправка сообщения в телеграм об успешном релизе
     - uses: actions/checkout@master
