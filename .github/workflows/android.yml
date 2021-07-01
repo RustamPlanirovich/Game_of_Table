@@ -39,7 +39,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # Upload URL, no need to change
           asset_path: app/build/outputs/apk/release/app-release.apk # Upload path
           asset_name: LightTimetable.apk #    
           asset_content_type: application/vnd.android.package-archiv #Resource Type
