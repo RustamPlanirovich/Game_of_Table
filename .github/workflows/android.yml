@@ -30,13 +30,17 @@ jobs:
       - name: Run tests and build release artifacts
         run: |
           ./gradlew test
-          bash ./gradlew assembleRelease --stacktrace
+          ./gradlew assembleRelease --stacktrace
           ./gradlew bundleRelease
 
-   
-    # Archive package file
-      - name: Archive production artifacts
+      - name: Upload signed APK
         uses: actions/upload-artifact@v2
         with:
-          name: build
-          path: app/build/outputs
+          name: app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload AAB Bundle
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.aab
+          path: app/build/outputs/bundle/release/app-release.aab
