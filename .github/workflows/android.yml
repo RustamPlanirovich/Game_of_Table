@@ -33,14 +33,21 @@ jobs:
           ./gradlew assembleRelease --stacktrace
           ./gradlew bundleRelease
 
+      - name: Sign ABB
+        id: sign
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+#          releaseDirectory: app/build/outputs/apk/release
+#          releaseDirectory: aap/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.KEYSTORE_FILE }}
+          alias: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
+          
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
           path: app/build/outputs/apk/release/app-release.apk
 
-      - name: Upload AAB Bundle
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release.aab
-          path: app/build/outputs/bundle/release/app-release.aab
