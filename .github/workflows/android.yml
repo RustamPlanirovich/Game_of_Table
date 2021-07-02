@@ -12,6 +12,7 @@ env:
 
 jobs:
   build_apk_aab:
+    if: startsWith(github.head_ref, 'release/') == true
     name: Build release artifacts
     runs-on: ubuntu-20.04
     steps:
@@ -34,7 +35,7 @@ jobs:
           ./gradlew bundleRelease
 
       - name: Upload signed APK
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
           path: app/build/outputs/apk/release/app-release.apk
