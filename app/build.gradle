@@ -6,58 +6,38 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
-def versionCode = new Properties()
-def versionCodeFile = rootProject.file('versioncode.properties')
-if (versionCodeFile.exists()) {
-    versionCode.load(new FileInputStream(versionCodeFile))
-}
-
-def versionName = new Properties()
-def versionNameFile = rootProject.file('versioncode.properties')
-if (versionNameFile.exists()) {
-    versionName.load(new FileInputStream(versionNameFile))
-}
-
-
-String oldVersionCode = versionCode['versionCode']
-String oldVersionName = versionName['versionName']
-if (oldVersionCode == null || oldVersionName == null ||
-        oldVersionCode.isEmpty() || oldVersionName.isEmpty()) {
-    println("Error: The version number cannot be empty")
-    return;
-}
-versionCode['versionCode'] = String.valueOf(versionCode['versionCode'].toInteger() + 1)
-
-String str = versionName['versionName'].toString()
-versionName['versionName'] = str.substring(0, str.lastIndexOf('.') + 1) +
-        (str.substring(str.lastIndexOf('.') + 1).toInteger() + 1)
-
-def code = new FileWriter(versionCodeFile)
-versionCode.store(code, null)
-code.flush()
-code.close()
-
-def name = new FileWriter(versionNameFile)
-versionName.store(name, null)
-name.flush()
-name.close()
-
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
+
+    def versionPropsFile = file('versioncode.properties')
+    def Properties versionProps = new Properties()
+
+    if (versionPropsFile.canRead()) {
+        versionProps.load(new FileInputStream(versionPropsFile))
+    }
+    else {
+        versionProps['versionCode']='0'
+    }
+
+    def code = versionProps['versionCode'].toInteger() + 1
+
+    versionProps['versionCode']=code.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
+
 
     defaultConfig {
         applicationId "com.example.gameoftable"
         minSdkVersion 26
         targetSdkVersion 30
 
-        versionCode versionCode['versionCode'].toInteger()
-        versionName versionName['versionName']
+        versionCode code
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    
+
     signingConfigs {
         release {
             def keystoreProperties = new Properties()
@@ -115,12 +95,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // Hilt dependencies
-    implementation("com.google.dagger:hilt-android:$hilt_version")
-    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    implementation 'com.google.dagger:hilt-android:2.37'
+    kapt 'com.google.dagger:hilt-android-compiler:2.37'
 
     // Life Data
     implementation "android.arch.lifecycle:extensions:1.1.1"
-    //noinspection LifecycleAnnotationProcessorWithJava8
+    // noinspection LifecycleAnnotationProcessorWithJava8
     kapt "android.arch.lifecycle:compiler:1.1.1"
 
     // Import the Firebase BoM
