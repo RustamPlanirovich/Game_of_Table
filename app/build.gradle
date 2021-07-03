@@ -6,6 +6,43 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
+def versionCode = new Properties()
+def versionCodeFile = rootProject.file('versioncode.properties')
+if (versionCodeFile.exists()) {
+    versionCode.load(new FileInputStream(versionCodeFile))
+}
+
+def versionName = new Properties()
+def versionNameFile = rootProject.file('versioncode.properties')
+if (versionNameFile.exists()) {
+    versionName.load(new FileInputStream(versionNameFile))
+}
+
+
+String oldVersionCode = versionCode['versionCode']
+String oldVersionName = versionName['versionName']
+if (oldVersionCode == null || oldVersionName == null ||
+        oldVersionCode.isEmpty() || oldVersionName.isEmpty()) {
+    println("Error: The version number cannot be empty")
+    return;
+}
+versionCode['versionCode'] = String.valueOf(versionCode['versionCode'].toInteger() + 1)
+
+String str = versionName['versionName'].toString()
+versionName['versionName'] = str.substring(0, str.lastIndexOf('.') + 1) +
+        (str.substring(str.lastIndexOf('.') + 1).toInteger() + 1)
+
+def code = new FileWriter(versionCodeFile)
+versionCode.store(code, null)
+code.flush()
+code.close()
+
+def name = new FileWriter(versionNameFile)
+versionName.store(name, null)
+name.flush()
+name.close()
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -14,8 +51,9 @@ android {
         applicationId "com.example.gameoftable"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+
+        versionCode versionCode['versionCode'].toInteger()
+        versionName versionName['versionName']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
