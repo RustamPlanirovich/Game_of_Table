@@ -7,33 +7,24 @@ plugins {
 }
 
 
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-    def versionPropsFile = file('versioncode.properties')
-    def Properties versionProps = new Properties()
-
-    if (versionPropsFile.canRead()) {
+    def versionProps = new Properties()
+    def versionPropsFile = rootProject.file('version.properties')
+    if (versionPropsFile.exists()) {
         versionProps.load(new FileInputStream(versionPropsFile))
     }
-    else {
-        versionProps['versionCode']='0'
-    }
-
-    def code = versionProps['versionCode'].toInteger() + 1
-
-    versionProps['versionCode']=code.toString()
-    versionProps.store(versionPropsFile.newWriter(), null)
-
 
     defaultConfig {
         applicationId "com.example.gameoftable"
         minSdkVersion 26
         targetSdkVersion 30
 
-        versionCode code
-        versionName "1.0"
+        versionCode versionProps['versionCode'].toString().toInteger()
+        versionName versionProps['versionName']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -108,14 +99,14 @@ dependencies {
 
     // Add the dependency for the Firebase SDK for Google Analytics
     // When using the BoM, don't specify versions in Firebase dependencies
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
 
     //Firebase Authentication
     implementation 'com.google.firebase:firebase-auth:21.0.1'
 
     // Declare the dependency for the Realtime Database library
     // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.0'
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"

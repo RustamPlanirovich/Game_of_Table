@@ -24,6 +24,51 @@ allprojects {
     }
 }
 
+task upgradeVersion{
+    group 'help'
+    description 'Build a new version'
+    doLast {
+        println("--- Automatic upgrade version number --- ")
+        def versionProps = new Properties()
+        def versionPropsFile = rootProject.file('version.properties')
+        if (versionPropsFile.exists()) {
+            versionProps.load(new FileInputStream(versionPropsFile))
+        }
+        String oldVersionCode = versionProps['versionCode']
+        String oldVersionName = versionProps['versionName']
+        if (oldVersionCode == null || oldVersionName == null ||
+                oldVersionCode.isEmpty() || oldVersionName.isEmpty()) {
+            println("Error: The version number cannot be empty")
+            return;
+        }
+        versionProps['versionCode'] = String.valueOf(versionProps['versionCode'].toInteger() + 1)
+        String str = versionProps['versionName'].toString()
+        versionProps['versionName'] = str.substring(0, str.lastIndexOf('.') + 1) +
+                (str.substring(str.lastIndexOf('.') + 1).toInteger() + 1)
+        String tip =
+                "Version number$oldVersionName($oldVersionCode)upgrade to${versionProps['versionName']}(${versionProps['versionCode']})"
+        println(tip)
+
+        def writer = new FileWriter(versionPropsFile)
+        versionProps.store(writer, null)
+        writer.flush()
+        writer.close()
+        def tag = "v${versionProps['versionName']}"
+
+
+        exec {
+            commandLine("git pull")
+            commandLine("git add version.properties")
+            commandLine("Git Commit -M \" version number is upgraded to:$tag\"")
+            commandLine("git push origin")
+            commandLine("git tag $tag")
+            commandLine("git push origin $tag")
+        }
+    }
+}
+
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
