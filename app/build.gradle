@@ -1,11 +1,11 @@
 plugins {
+
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
 }
-
 
 
 android {
@@ -17,6 +17,7 @@ android {
     if (versionPropsFile.exists()) {
         versionProps.load(new FileInputStream(versionPropsFile))
     }
+
 
     defaultConfig {
         applicationId "com.example.gameoftable"
@@ -63,7 +64,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures{
+
+    buildFeatures {
         viewBinding true
         dataBinding true
     }

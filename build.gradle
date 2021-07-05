@@ -19,12 +19,13 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        google()
     }
 }
 
-task upgradeVersion(type: Exec) {
+task upgradeVersion {
     group 'help'
     description 'Build a new version'
     doLast {
@@ -55,22 +56,21 @@ task upgradeVersion(type: Exec) {
         writer.close()
         def tag = "v${versionProps['versionName']}"
 
-        commandLine("git pull")
-        commandLine("git add version.properties")
-        commandLine("Git Commit -M \" version number is upgraded to:$tag\"")
-        commandLine("git push origin")
-        commandLine("git tag $tag")
-        commandLine("git push origin $tag")
-        cmdExecute("git pull")
+        exec {
+            commandLine "cmd", "git", "git pull"
+            println("one")
+            commandLine "cmd", "git", "git add version.properties"
+            println("two")
+            commandLine "cmd", "git", "Git Commit -M \" version number is upgraded to:$tag\""
+            println("three")
+            commandLine "cmd", "git", "git push origin"
+            println("four")
+            commandLine "cmd", "git", "git tag $tag"
+            println("five")
+            commandLine "cmd", "git", "git push origin $tag"
+            println("six")
 
-//        exec {
-//            commandLine("git pull")
-//            commandLine("git add version.properties")
-//            commandLine("Git Commit -M \" version number is upgraded to:$tag\"")
-//            commandLine("git push origin")
-//            commandLine("git tag $tag")
-//            commandLine("git push origin $tag")
-//        }
+        }
     }
 }
 
